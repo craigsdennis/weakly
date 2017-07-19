@@ -1,0 +1,2 @@
+GetCurrentWeekIntent what is going on this week
+GetCurrentWeekIntent what is happening

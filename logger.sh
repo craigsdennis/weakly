@@ -1,0 +1,1 @@
+awslogs get /aws/lambda/Weakly ALL --watch
