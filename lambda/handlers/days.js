@@ -1,5 +1,4 @@
 const Alexa = require('alexa-sdk');
-const Events = require('../events');
 const EventsHandler = require('./events');
 const Utils = require('./utils');
 const STATE = 'ChooseDays';
@@ -12,15 +11,9 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
         this.emit(':ask', `There are ${dayInfo.count} events happening on ${dayInfo.friendlyDay}. Are you interested?`);
     },
     'AMAZON.YesIntent': function() {
-        const dayInfo = Utils.dayInfoFromContext(this);
-        const location = Utils.getLocationPreference(this);
-        // Get events for this day on demand
-        Events.searchDay(location, dayInfo.day).then(results => {
-            Utils.updateListings(this, results);
-            // Set state to event choosing
-            this.handler.state = EventsHandler.STATE;
-            this.emitWithState('PromptEvent');
-        });
+        // Set state to event choosing
+        this.handler.state = EventsHandler.STATE;
+        this.emitWithState('PromptEvent');
     },
     'AMAZON.NoIntent': function() {
         // TODO: handle if

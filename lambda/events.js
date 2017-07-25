@@ -36,7 +36,7 @@ exports.countsForWeek = function(location, starting='today') {
     });
 }
 
-function searchDay(location, day='today', isCountOnly=false) {
+function searchDay(location, day='today', isCountOnly=false, pageNumber=1) {
     if (day === 'today') {
         day = new Date();
     }
@@ -44,9 +44,9 @@ function searchDay(location, day='today', isCountOnly=false) {
     // Trailing zeros are weird Eventful API requirements
     const fmt = 'YYYYMMDD00';
     return new Promise((resolve, reject) => {
-        console.log('Before call');
         const searchParams = {
-            page_size: 40,
+            page_size: 1,
+            page_number: pageNumber,
             category: 'music,comedy',
             include: 'categories,popularity',
             date: `${startingMoment.format(fmt)}-${startingMoment.format(fmt)}`,
@@ -67,13 +67,16 @@ function searchDay(location, day='today', isCountOnly=false) {
 
                 resolve(data.search.total_items);
             } else {
-                const eventsResponse = data.search.events.event;
+                let eventsResponse = data.search.events.event;
+                if (!Array.isArray(eventsResponse)) {
+                    eventsResponse = [eventsResponse];
+                }
                 const eventData = eventsResponse.map(event => {
                     return {
                         id: 'EVENTFUL::' + event['$'].id,
-                        title: event.title,
+                        title: event.title.replace('&', 'and'),
                         startTime: event.start_time,
-                        venue: event.venue_name
+                        venue: event.venue_name.replace('&', 'and')
                     };
                 });
                 resolve(eventData);
