@@ -1,2 +1,7 @@
 GetCurrentWeekIntent what is going on this week
 GetCurrentWeekIntent what is happening
+
+SetLocationPreferenceIntent search within {Location}
+SetLocationPreferenceIntent set my city to {Location}
+SetLocationPreferenceIntent browse {Location}
+SetLocationPreferenceIntent set location to {Location}

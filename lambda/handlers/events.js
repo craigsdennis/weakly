@@ -16,6 +16,7 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
     },
     'AMAZON.YesIntent': function() {
         // Get more detail and send card?
+
     },
     'AMAZON.NoIntent': function() {
         // Increment to the next event (if there is one)

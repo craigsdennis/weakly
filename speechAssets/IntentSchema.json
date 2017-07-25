@@ -4,6 +4,15 @@
       "intent": "GetCurrentWeekIntent"
     },
     {
+      "intent": "SetLocationPreferenceIntent",
+      "slots": [
+          {
+            "name": "Location",
+            "type": "AMAZON.US_CITY"
+          }
+      ]
+    },
+    {
       "intent": "AMAZON.YesIntent"
     },
     {

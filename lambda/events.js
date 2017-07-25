@@ -9,7 +9,7 @@ exports.testData = {
     client
 };
 
-exports.countsForWeek = function(lat, long, starting='today') {
+exports.countsForWeek = function(location, starting='today') {
     if (starting === 'today') {
         starting = new Date();
     }
@@ -24,7 +24,7 @@ exports.countsForWeek = function(lat, long, starting='today') {
         nextDay = nextDay.clone().add(1, 'days');
     }
     moments.push(endingMoment);
-    const searches = moments.map(m => searchDay(lat, long, m, true));
+    const searches = moments.map(m => searchDay(location, m, true));
     return Promise.all(searches).then(results => {
         return results.map((count, index) => {
             return {
@@ -36,7 +36,7 @@ exports.countsForWeek = function(lat, long, starting='today') {
     });
 }
 
-function searchDay(lat, long, day='today', isCountOnly=false) {
+function searchDay(location, day='today', isCountOnly=false) {
     if (day === 'today') {
         day = new Date();
     }
@@ -51,7 +51,7 @@ function searchDay(lat, long, day='today', isCountOnly=false) {
             include: 'categories,popularity',
             date: `${startingMoment.format(fmt)}-${startingMoment.format(fmt)}`,
             sort_order: 'date',
-            location: `${lat},${long}`,
+            location: location,
             change_multi_day_start: true,
             within: 15
         };
@@ -64,6 +64,7 @@ function searchDay(lat, long, day='today', isCountOnly=false) {
                 reject(err);
             }
             if (isCountOnly) {
+
                 resolve(data.search.total_items);
             } else {
                 const eventsResponse = data.search.events.event;

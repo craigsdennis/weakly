@@ -55,6 +55,30 @@ function eventInfoFromContext(context) {
     return context.attributes['listings'][eventChoiceIndex[1]];
 }
 
+function getLocationPreference(context) {
+    return context.attributes.preferences.location;
+}
+
+function setLocationPreference(context, location) {
+    context.attributes.preferences.location = location;
+    context.emit(':saveState');
+}
+
+function isReady(context) {
+    if (context.attributes.preferences === undefined) {
+        return false;
+    }
+    if (getLocationPreference(context) === undefined) {
+        return false;
+    }
+    return true;
+}
+
+function debug(context, ...args) {
+    console.log(`===(${context.attributes.STATE})===>`, ...args);
+}
+
+
 module.exports = {
     'dayInfoFromContext': dayInfoFromContext,
     'eventInfoFromContext': eventInfoFromContext,
@@ -62,5 +86,9 @@ module.exports = {
     'decrementDay': decrementDay,
     'incrementEvent': incrementEvent,
     'decrementEvent': decrementEvent,
-    'updateListings': updateListings
+    'updateListings': updateListings,
+    'getLocationPreference': getLocationPreference,
+    'setLocationPreference': setLocationPreference,
+    'isReady': isReady,
+    'debug': debug
 };

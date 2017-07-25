@@ -13,8 +13,9 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
     },
     'AMAZON.YesIntent': function() {
         const dayInfo = Utils.dayInfoFromContext(this);
+        const location = Utils.getLocationPreference(this);
         // Get events for this day on demand
-        Events.searchDay(Events.testData.lat, Events.testData.long, dayInfo.day).then(results => {
+        Events.searchDay(location, dayInfo.day).then(results => {
             Utils.updateListings(this, results);
             // Set state to event choosing
             this.handler.state = EventsHandler.STATE;
