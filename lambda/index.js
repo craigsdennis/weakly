@@ -3,6 +3,7 @@
 const Alexa = require('alexa-sdk');
 const DaysHandler = require('./handlers/days');
 const EventsHandler = require('./handlers/events');
+const EventHandler = require('./handlers/event');
 const Utils = require('./handlers/utils');
 const PreferencesHandler = require('./handlers/preferences');
 const LocationPreferenceHandler = require('./handlers/preferences/location');
@@ -69,7 +70,8 @@ exports.handler = function (event, context, callback) {
         PreferencesHandler.handler,
         LocationPreferenceHandler.handler,
         DaysHandler.handler,
-        EventsHandler.handler
+        EventsHandler.handler,
+        EventHandler.handler
     );
     alexa.execute();
 };

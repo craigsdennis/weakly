@@ -74,6 +74,7 @@ function searchDay(location, day='today', isCountOnly=false, pageNumber=1) {
                 const eventData = eventsResponse.map(event => {
                     return {
                         id: 'EVENTFUL::' + event['$'].id,
+                        url: event.url,
                         title: event.title.replace('&', 'and'),
                         startTime: event.start_time,
                         venue: event.venue_name.replace('&', 'and')

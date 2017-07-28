@@ -1,6 +1,7 @@
 const Alexa = require('alexa-sdk');
 const Events = require('../events');
 const DaysHandler = require('./days');
+const EventHandler = require('./event');
 const Utils = require('./utils');
 const STATE = 'ChooseEvents';
 
@@ -23,7 +24,8 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
     },
     'AMAZON.YesIntent': function() {
         // Get more detail and send card?
-
+        this.handler.state = EventHandler.STATE;
+        this.emitWithState('DisplayEvent');
     },
     'AMAZON.NoIntent': function() {
         // Increment to the next event (if there is one)
