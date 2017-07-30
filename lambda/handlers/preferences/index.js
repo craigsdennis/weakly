@@ -3,6 +3,13 @@ const LocationPreferenceHandler = require('./location');
 const Utils = require('../utils');
 const STATE = 'ChoosePreferences';
 
+exports.isStateRelated = function(intent) {
+    if (intent && intent.name !== undefined) {
+        return intent.name.includes('Preferences');
+    }
+    return false;
+}
+
 exports.STATE = STATE;
 exports.handler = Alexa.CreateStateHandler(STATE, {
     // TODO:  This is basically a dialog, but I'm afraid of the Beta ;)
@@ -25,11 +32,21 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
     },
 
     'AMAZON.YesIntent': function() {
+        Utils.clearCounts(this);
         // Root page
         this.emit('Begin');
     },
 
     'AMAZON.NoIntent': function() {
+        this.emitWithState('SetLocationPreferenceIntent');
+    },
+
+    'ResetPreferencesIntent': function() {
+        delete this.attributes.preferences;
+        this.emitWithState('PromptPreferences');
+    },
+
+    'SetLocationPreferenceIntent': function() {
         this.handler.state = LocationPreferenceHandler.STATE;
         this.emitWithState('PromptLocation');
     },

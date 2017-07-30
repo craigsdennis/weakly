@@ -14,7 +14,7 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
 
     'PromptLocation': function() {
         const location = Utils.getLocationPreference(this);
-        let msg = 'We need you to define your location. For example say "Set location to Portland, Oregon"';
+        let msg = 'In order to inform you of events, we need to know your location. For example say "Set location to Portland, Oregon"';
         if (location !== undefined) {
             msg = `Your current location is ${location}.  To change this, say something like "Set location to Portland, Oregon"`;
         }
@@ -33,8 +33,14 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
     },
 
     'Unhandled': function() {
-        Utils.debug(this, 'Unhandled location');
-        this.emitWithState('PromptLocation');
+        const intent = this.event.request.intent;
+        if (intent.name.includes('Preferences')) {
+            this.handler.state = PreferencesHandler.STATE;
+            return this.emitWithState(intent.name);
+        } else {
+            Utils.debug(this, 'Unhandled location');
+            this.emitWithState('PromptLocation');
+        }
     }
 
 });

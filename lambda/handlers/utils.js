@@ -1,5 +1,5 @@
 function incrementDay(context) {
-    const totalDays = context.attributes['events'].length;
+    const totalDays = context.attributes.counts.length;
     if (context.attributes['eventChoiceIndex'][0] < totalDays) {
         // Safely increment the day
         context.attributes['eventChoiceIndex'][0] += 1;
@@ -39,7 +39,7 @@ function decrementEvent(context) {
 
 function dayInfoFromContext(context) {
     const eventChoiceIndex = context.attributes['eventChoiceIndex'];
-    const eventCounts = context.attributes['events'];
+    const eventCounts = context.attributes.counts;
     // First dimension is day
     return eventCounts[eventChoiceIndex[0]];
 }
@@ -50,12 +50,36 @@ function eventPageNumberFromContext(context) {
     return eventChoiceIndex[1] + 1;
 }
 
+function forwardIfRelated(context, Handler, otherwiseFn) {
+    const intent = context.event.request.intent;
+    if (Handler && Handler.isStateRelated && Handler.isStateRelated(intent)) {
+        context.handler.state = Handler.STATE;
+        context.emitWithState(intent.name);
+    } else {
+        otherwiseFn();
+    }
+}
+
+function setCounts(context, counts) {
+    context.attributes.counts = counts;
+}
+
+function clearCounts(context) {
+    context.attributes.eventChoiceIndex = [0, 0];
+    delete context.attributes.counts;
+    delete context.attributes.currentEvent;
+}
+
+function hasCounts(context) {
+    return context.attributes.counts !== undefined;
+}
+
 function currentEventFromContext(context) {
-    return context.attributes['currentEvent'];
+    return context.attributes.currentEvent;
 }
 
 function setCurrentEvent(context, event) {
-    context.attributes['currentEvent'] = event;
+    context.attributes.currentEvent = event;
 }
 
 function getLocationPreference(context) {
@@ -83,16 +107,20 @@ function debug(context, ...args) {
 
 
 module.exports = {
-    'dayInfoFromContext': dayInfoFromContext,
-    'eventPageNumberFromContext': eventPageNumberFromContext,
-    'currentEventFromContext': currentEventFromContext,
-    'setCurrentEvent': setCurrentEvent,
-    'incrementDay': incrementDay,
-    'decrementDay': decrementDay,
-    'incrementEvent': incrementEvent,
-    'decrementEvent': decrementEvent,
-    'getLocationPreference': getLocationPreference,
-    'setLocationPreference': setLocationPreference,
-    'isReady': isReady,
-    'debug': debug
+    dayInfoFromContext,
+    eventPageNumberFromContext,
+    currentEventFromContext,
+    setCurrentEvent,
+    setCounts,
+    clearCounts,
+    hasCounts,
+    incrementDay,
+    decrementDay,
+    incrementEvent,
+    decrementEvent,
+    getLocationPreference,
+    setLocationPreference,
+    isReady,
+    forwardIfRelated,
+    debug
 };

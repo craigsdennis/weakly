@@ -13,6 +13,9 @@
       ]
     },
     {
+      "intent": "ResetPreferencesIntent"
+    },
+    {
       "intent": "AMAZON.YesIntent"
     },
     {

@@ -27,12 +27,12 @@ const handlers = {
     'Begin': function() {
         this.handler.state = DaysHandler.STATE;
         // Do we have our information?
-        if (this.attributes.events === undefined) {
+        if (!Utils.hasCounts(this)) {
             Events.countsForWeek(this.attributes.preferences.location).then(results => {
                 // Set up defaults
-                this.attributes['eventChoiceIndex'] = [0, 0];
                 this.attributes['endedSessionCount'] = 0;
-                this.attributes['events'] = results;
+                Utils.clearCounts(this);
+                Utils.setCounts(this, results);
                 this.emit(':saveState');
                 this.emitWithState('PromptDay');
             }).catch(err => {

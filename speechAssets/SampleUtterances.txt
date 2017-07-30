@@ -5,3 +5,6 @@ SetLocationPreferenceIntent search within {Location}
 SetLocationPreferenceIntent set my city to {Location}
 SetLocationPreferenceIntent browse {Location}
 SetLocationPreferenceIntent set location to {Location}
+
+ResetPreferencesIntent reset my preferences
+ResetPreferencesIntent reset

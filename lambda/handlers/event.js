@@ -1,5 +1,6 @@
 const Alexa = require('alexa-sdk');
 const EventsHandler = require('./events');
+const PreferencesHandler = require('./preferences');
 const Utils = require('./utils');
 const STATE = 'EventDetail';
 
@@ -31,6 +32,11 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
         this.emitWithState('AbortDay');
     },
 
-
-
+    'Unhandled': function() {
+        Utils.debug(this, 'Unhandled request');
+        Utils.forwardIfRelated(this, PreferencesHandler, () => {
+            const dayInfo = Utils.dayInfoFromContext(this);
+            this.emit(':ask', `Are you interested in more events on ${dayInfo.friendlyDay}?  Answer yes or no?`);
+        });
+    }
 });
