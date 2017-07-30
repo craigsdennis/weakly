@@ -34,13 +34,10 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
 
     'Unhandled': function() {
         const intent = this.event.request.intent;
-        if (intent.name.includes('Preferences')) {
-            this.handler.state = PreferencesHandler.STATE;
-            return this.emitWithState(intent.name);
-        } else {
-            Utils.debug(this, 'Unhandled location');
+        Utils.debug(this, 'Unhandled location');
+        Utils.forwardIfRelated(this, PreferencesHandler, () => {
             this.emitWithState('PromptLocation');
-        }
+        });
     }
 
 });
