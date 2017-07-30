@@ -50,7 +50,7 @@ function searchDay(location, day='today', isCountOnly=false, pageNumber=1) {
             category: 'music,comedy',
             include: 'categories,popularity',
             date: `${startingMoment.format(fmt)}-${startingMoment.format(fmt)}`,
-            sort_order: 'date',
+            sort_order: 'popularity',
             location: location,
             change_multi_day_start: true,
             within: 15
