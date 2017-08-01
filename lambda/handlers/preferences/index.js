@@ -41,6 +41,15 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
         this.emitWithState('SetLocationPreferenceIntent');
     },
 
+    'AMAZON.CancelIntent': function () {
+        this.emit(':tell', 'Have a good week!');
+    },
+
+    'AMAZON.StopIntent': function () {
+        this.emit(':tell', 'Okay, have a great week!');
+    },
+
+
     'ResetPreferencesIntent': function() {
         delete this.attributes.preferences;
         this.emitWithState('PromptPreferences');
