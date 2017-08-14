@@ -1,13 +1,5 @@
-const Eventful = require('eventful-node');
+const Eventful = require('./lib/eventful');
 const moment = require('moment');
-const client = new Eventful.Client(process.env.EVENTFUL_APP_KEY);
-const lat = 45.553502045;
-const long = -122.6440930122;
-exports.testData = {
-    lat,
-    long,
-    client
-};
 
 exports.countsForWeek = function(location, starting='today') {
     if (starting === 'today') {
@@ -58,22 +50,17 @@ function searchDay(location, day='today', isCountOnly=false, pageNumber=1) {
         if (isCountOnly) {
             searchParams.count_only = true;
         }
-        client.searchEvents(searchParams, (err, data) => {
-            if (err) {
-                console.error(err);
-                reject(err);
-            }
+        Eventful.searchEvents(searchParams).then(data => {
             if (isCountOnly) {
-
-                resolve(data.search.total_items);
+                resolve(data.total_items);
             } else {
-                let eventsResponse = data.search.events.event;
+                let eventsResponse = data.events.event;
                 if (!Array.isArray(eventsResponse)) {
                     eventsResponse = [eventsResponse];
                 }
                 const eventData = eventsResponse.map(event => {
                     return {
-                        id: 'EVENTFUL::' + event['$'].id,
+                        id: 'EVENTFUL::' + event.id,
                         url: event.url,
                         title: event.title.replace('&', 'and'),
                         startTime: event.start_time,
