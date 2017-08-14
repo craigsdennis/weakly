@@ -52,7 +52,7 @@ function searchDay(location, day='today', isCountOnly=false, pageNumber=1) {
         }
         Eventful.searchEvents(searchParams).then(data => {
             if (isCountOnly) {
-                resolve(data.search.total_items);
+                resolve(data.total_items);
             } else {
                 let eventsResponse = data.events.event;
                 if (!Array.isArray(eventsResponse)) {
