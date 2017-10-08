@@ -50,6 +50,12 @@ function eventPageNumberFromContext(context) {
     return eventChoiceIndex[1] + 1;
 }
 
+function isFirstEventForDay(context) {
+    const eventChoiceIndex = context.attributes['eventChoiceIndex'];
+    // Second dimension is event index
+    return eventChoiceIndex[1] === 0;
+}
+
 function forwardIfRelated(context, Handler, otherwiseFn) {
     const intent = context.event.request.intent;
     if (Handler && Handler.isStateRelated && Handler.isStateRelated(intent)) {
@@ -121,6 +127,7 @@ module.exports = {
     getLocationPreference,
     setLocationPreference,
     isReady,
+    isFirstEventForDay,
     forwardIfRelated,
     debug
 };
