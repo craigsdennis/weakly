@@ -16,7 +16,7 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
             const eventInfo = results[0];
             Utils.setCurrentEvent(this, eventInfo);
             let prefix = '';
-            if (Utils.isFirstEventForDay(context)) {
+            if (Utils.isFirstEventForDay(this)) {
                 prefix = 'After each event, tell me if you are interested by saying yes or no.';
             }
             this.emit(':ask', `${prefix} ${eventInfo.title}?`);

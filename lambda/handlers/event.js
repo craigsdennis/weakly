@@ -1,4 +1,5 @@
 const Alexa = require('alexa-sdk');
+const Events = require('../events');
 const EventsHandler = require('./events');
 const PreferencesHandler = require('./preferences');
 const Utils = require('./utils');
@@ -9,14 +10,15 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
     'DisplayEvent': function() {
         const currentEvent = Utils.currentEventFromContext(this);
         const dayInfo = Utils.dayInfoFromContext(this);
-        events.getEventById(currentEvent.id).then(event => {
-            const msg = `${event.title} is happening at ${event.startTime} at ${event.venue}.
+        Events.getEventById(currentEvent.id).then(event => {
+            console.dir(event);
+            const msg = `${event.title} is happening at ${event.start_time} at ${event.venue_name}.
                 Check your Alexa app for more info.
                 Would you like to hear more events for ${dayInfo.friendlyDay}?`;
             const cardTitle = `${event.title}`;
             const cardBody = `${event.url}
-                ${event.venue}
-                ${event.startTime}
+                ${event.venue_name}
+                ${event.start_time}
             `;
             this.emit(':askWithCard', msg, msg, cardTitle, cardBody);
         })
