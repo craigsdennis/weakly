@@ -15,7 +15,11 @@ exports.handler = Alexa.CreateStateHandler(STATE, {
         Events.searchDay(location, dayInfo.day, false, Utils.eventPageNumberFromContext(this)).then(results => {
             const eventInfo = results[0];
             Utils.setCurrentEvent(this, eventInfo);
-            this.emit(':ask', `${eventInfo.title} is happening at ${eventInfo.venue}. Are you interested?`);
+            let prefix = '';
+            if (Utils.isFirstEventForDay(context)) {
+                prefix = 'After each event, tell me if you are interested by saying yes or no.';
+            }
+            this.emit(':ask', `${prefix} ${eventInfo.title}?`);
         });
     },
 

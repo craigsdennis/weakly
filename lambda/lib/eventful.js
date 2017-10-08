@@ -25,6 +25,21 @@ function searchEvents(options) {
     });
 }
 
+function getEvent(id) {
+    const args = {
+        parameters: {
+            app_key: APP_KEY,
+            id: id
+        }
+    };
+    return new Promise((resolve, reject) => {
+        client.get(`${BASE_URL}/events/get`, args, (data, response) => {
+            resolve(data);
+        });
+    });
+}
+
 module.exports = {
-    searchEvents
+    searchEvents,
+    getEvent
 }

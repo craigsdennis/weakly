@@ -73,4 +73,17 @@ function searchDay(location, day='today', isCountOnly=false, pageNumber=1) {
     });
 };
 
-exports.searchDay = searchDay;
+function getEventById(eventId) {
+    // Currently we only support Eventful anyways
+    const ids = eventId.split("::");
+    if (ids[0] === "EVENTFUL") {
+        return Eventful.getEvent(ids[1]);
+    } else {
+        return Promise.reject(`Unknown id of type ${ids[0]}`);
+    }
+}
+
+module.exports = {
+    searchDay,
+    getEventById
+};
