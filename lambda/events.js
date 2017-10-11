@@ -1,7 +1,7 @@
 const Eventful = require('./lib/eventful');
 const moment = require('moment');
 
-exports.countsForWeek = function(location, starting='today') {
+function countsForWeek(location, starting='today') {
     if (starting === 'today') {
         starting = new Date();
     }
@@ -85,5 +85,6 @@ function getEventById(eventId) {
 
 module.exports = {
     searchDay,
-    getEventById
+    getEventById,
+    countsForWeek
 };
